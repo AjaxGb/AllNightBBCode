@@ -1,8 +1,8 @@
 # All Night BBCode
 
-[*All Night Laundry*](http://www.all-night-laundry.com/) is a great webcomic (as you probably know if you're here),
-but its migration from the now-defunct MSPA Forums has left some broken BBCode in places. This userscript
-fixes it for the time being.
+[*All Night Laundry*](http://www.all-night-laundry.com/) is a great webcomic (as you probably know if you're reading this),
+but its migration from the now-defunct MSPA Forums has left some broken BBCode tags in places. This userscript
+fixes them.
 
 ## Installation
 
