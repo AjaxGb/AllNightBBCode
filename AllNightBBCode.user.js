@@ -122,9 +122,6 @@
             console.groupCollapsed('All Night BBCode debug tree', element);
             try {
                 walkNodes(walker, {});
-            } catch (err) {
-                alert('All Night BBCode error! ' + err);
-                throw err;
             } finally {
                 console.groupEnd();
             }
