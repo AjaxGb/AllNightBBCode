@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         All Night BBCode
-// @version      0.3
+// @version      0.3.1
 // @description  Fix broken BBCode on the All Night Laundry comic
 // @author       AjaxGb
 // @match        http*://www.all-night-laundry.com/post/*
@@ -15,13 +15,6 @@
 
     const origMSPAFontSizePx = 13;
 
-    function getElementDisplayName(el) {
-        let display = el.tagName;
-        if (el.id) display += '#'+el.id;
-        if (el.className) display += '.'+[...el.classList].join('.');
-        return display;
-    }
-
     function walkNodes(walker, {addToNode, addToName}) {
         for (let node = walker.currentNode; node;) {
             let newAddTo = null;
@@ -29,21 +22,13 @@
                 case Node.ELEMENT_NODE:
                 {
                     if (walker.firstChild()) {
-                        console.group(getElementDisplayName(node), node);
-                        try {
-                            walkNodes(walker, {});
-                        } finally {
-                            console.groupEnd();
-                        }
+                        walkNodes(walker, {});
                         walker.parentNode();
-                    } else {
-                        console.log(getElementDisplayName(node), node);
                     }
                     break;
                 }
                 case Node.TEXT_NODE:
                 {
-                    console.log('TEXT:', node);
                     const tagMatch = node.data.match(/\[size=(\d+)\]|\[quote=([^;\]]+);\d+\]|\[\/(size|quote)\]/);
                     if (tagMatch) {
                         const [tagText, sizePxText, quoteName, endTag] = tagMatch;
@@ -92,12 +77,7 @@
                             }
 
                             walker.currentNode = nextTextNode;
-                            console.group(tagText);
-                            try {
-                                walkNodes(walker, walkArgs);
-                            } finally {
-                                console.groupEnd();
-                            }
+                            walkNodes(walker, walkArgs);
                             walker.currentNode = node;
                         }
                     }
@@ -119,16 +99,13 @@
     function fixBBCode(element) {
         const walker = document.createTreeWalker(element, whatToWalk);
         if (walker.firstChild()) {
-            console.groupCollapsed('All Night BBCode debug tree', element);
-            try {
-                walkNodes(walker, {});
-            } finally {
-                console.groupEnd();
-            }
+            walkNodes(walker, {});
         }
     }
-    window.allNightBBCode_fixBBCode = fixBBCode;
 
     fixBBCode(document.getElementById('main_content'));
-    fixBBCode(document.getElementById('notes'));
+    const authorNotes = document.getElementById('notes');
+    if (authorNotes) {
+        fixBBCode(authorNotes);
+    }
 })();
