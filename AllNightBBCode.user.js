@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         All Night BBCode
-// @version      0.3.1
+// @version      0.3.2
 // @description  Fix broken BBCode on the All Night Laundry comic
 // @author       AjaxGb
 // @match        http*://www.all-night-laundry.com/post/*
@@ -29,7 +29,7 @@
                 }
                 case Node.TEXT_NODE:
                 {
-                    const tagMatch = node.data.match(/\[size=(\d+)\]|\[quote=([^;\]]+);\d+\]|\[\/(size|quote)\]/);
+                    const tagMatch = node.data.match(/\[strike\]|\[size=(\d+)\]|\[quote=([^;\]]+);\d+\]|\[\/(strike|size|quote)\]/);
                     if (tagMatch) {
                         const [tagText, sizePxText, quoteName, endTag] = tagMatch;
                         const tagTextNode = node.splitText(tagMatch.index);
@@ -49,7 +49,13 @@
                         } else {
                             let walkArgs;
 
-                            if (tagText.startsWith('[size=')) {
+                            if (tagText.startsWith('[strike')) {
+                                const strike = document.createElement('s');
+                                tagTextNode.replaceWith(strike);
+
+                                walkArgs = {addToNode: strike, addToName: 'strike'};
+
+                            } else if (tagText.startsWith('[size=')) {
                                 const sizePx = parseInt(sizePxText);
                                 const span = document.createElement('span');
                                 const currFontSize = tagTextNode.parentElement.computedStyleMap().get('font-size');
