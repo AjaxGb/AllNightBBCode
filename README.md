@@ -14,6 +14,7 @@ Here are the broken tags I've seen and fixed thus far:
 
 - `[size]`
 - `[quote]`
+- `[strike]`
 
 If I notice more as I reread the comic, I'll update the script.
 
