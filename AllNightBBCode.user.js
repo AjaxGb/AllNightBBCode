@@ -29,15 +29,16 @@
                 }
                 case Node.TEXT_NODE:
                 {
-                    const tagMatch = node.data.match(/\[strike\]|\[size=(\d+)\]|\[quote=([^;\]]+);\d+\]|\[\/(strike|size|quote)\]/);
+                    const tagMatch = node.data.match(/\[strike\]|\[size=(\d+)\]|\[quote=([^;\]]+);\d+\]|\[\/(strike|size|quote)\]/i);
                     if (tagMatch) {
-                        const [tagText, sizePxText, quoteName, endTag] = tagMatch;
+                        const [tagTextI, sizePxText, quoteName, endTagI] = tagMatch;
                         const tagTextNode = node.splitText(tagMatch.index);
-                        const nextTextNode = tagTextNode.splitText(tagText.length);
+                        const nextTextNode = tagTextNode.splitText(tagTextI.length);
                         //  node  tagTextNode nextTextNode
                         // "blah"   "[tag]"   "blah"
 
-                        if (endTag) {
+                        if (endTagI) {
+                            const endTag = endTagI.toLowerCase();
                             if (addToName !== endTag) {
                                 throw new Error(`Closed [${endTag}] tag when no such tag available`);
                             }
@@ -47,6 +48,7 @@
                             }
                             return;
                         } else {
+                            const tagText = tagTextI.toLowerCase();
                             let walkArgs;
 
                             if (tagText.startsWith('[strike')) {
