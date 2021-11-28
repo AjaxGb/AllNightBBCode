@@ -16,7 +16,9 @@ Here are the broken tags I've seen and fixed thus far:
 - `[quote]`
 - `[strike]`
 
-If I notice more as I reread the comic, I'll update the script.
+The script also fixes some pages with broken UTF-8 text encoding issues.
+
+If I notice more issues or missing tags as I reread the comic, I'll update the script.
 
 Please do make a [bug report](https://github.com/AjaxGb/AllNightBBCode/issues/new?template=bug_report.md) if you spot one I missed,
 or notice the script otherwise messing up!
