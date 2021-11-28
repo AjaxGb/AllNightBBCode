@@ -14,6 +14,12 @@
     GM_addStyle('.ui-widget-content .quote { border-color: rgb(210, 210, 210); }');
 
     const origMSPAFontSizePx = 13;
+    
+    const decoder = new TextDecoder('utf-8');
+    const u8arrays = {
+        2: new Uint8Array(2),
+        3: new Uint8Array(3),
+    };
 
     function walkNodes(walker, {addToNode, addToName}) {
         for (let node = walker.currentNode; node;) {
@@ -29,6 +35,14 @@
                 }
                 case Node.TEXT_NODE:
                 {
+                    node.data = node.data.replace(/[\xc0-\xdf][\x80-\xbf]|[\xe0-\xef][\x80-\xbf]{2}/g, text => {
+                        const array = u8arrays[text.length];
+                        for (let i = text.length - 1; i >= 0; i--) {
+                            array[i] = text.codePointAt(i);
+                        }
+                        return decoder.decode(array);
+                    });
+
                     const tagMatch = node.data.match(/\[strike\]|\[size=(\d+)\]|\[quote=([^;\]]+);\d+\]|\[\/(strike|size|quote)\]/i);
                     if (tagMatch) {
                         const [tagTextI, sizePxText, quoteName, endTagI] = tagMatch;
