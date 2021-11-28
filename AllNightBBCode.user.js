@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         All Night BBCode
-// @version      0.3.3
+// @version      0.4
 // @description  Fix broken BBCode on the All Night Laundry comic
 // @author       AjaxGb
 // @match        http*://www.all-night-laundry.com/post/*
